@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: optilog
+      POSTGRES_DB: Optilog
+    ports:
+      - "5400:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+  web:
+    image: optilog
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  
