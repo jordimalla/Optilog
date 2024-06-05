@@ -1,0 +1,20 @@
+<h1>Optimization</h1>
+<form action="{% url 'opti:optimize' %}" method="POST">
+    {% csrf_token %}
+    <fieldset>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <select id="weekOfYear">
+            {% for week in weeksOfYear %}
+                <option value="{{ week }}">{{ week }}</option>
+            {% endfor %}
+        </select>
+    </fieldset>
+    <input type="submit" value="Optimize"
+</form>
+<div>
+    <ul>
+    {% for transport in weekAnimalTransports %}
+        <li>{{ transport.week_of_year }} : {{ transport.origin_farm.name }} - {{ transport.destination_slaughterhouse.name }} - {{ transport.destination_slaughterhouse.transport_cost }}</li>
+    {% endfor %}
+    </ul>
+</div>
