@@ -155,4 +155,3 @@ def optimize_transport(week_of_year_selected):
         result = "El problema no tiene solución óptima."
     
     return result
-
