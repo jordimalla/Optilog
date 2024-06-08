@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from opti.admin import admin_site
 
 urlpatterns = [
-    path('opti/', include("opti.urls")),
-    path('admin/', admin.site.urls),
+    path('admin/', admin_site.urls),
+    path('accounts/', include('django.contrib.auth.urls')), 
+    path('opti/', include("opti.urls")),    
 ]

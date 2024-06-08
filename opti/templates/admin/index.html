@@ -1,0 +1,13 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+    {{ block.super }}
+    <div class="app-opt-link">
+        <h2>Custom Links</h2>
+        <ul class="object-tools">
+            <li>
+                {{ custom_link|safe }}
+            </li>
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+<!-- templates/admin/optimization_view.html -->
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<h1>Optimization View</h1>
+
+<form method="get">
+    <label for="week_of_year_selected">Week of Year:</label>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <select name="week_of_year_selected" id="week_of_year_selected">
+            <value
+            {% for week in weeks_of_year %}
+                <option {% if week_of_year_selected == week %} selected {% endif %} value="{{ week }}">{{ week }}</option>
+            {% endfor %}
+        </select>
+    <button type="submit">Filter</button>
+</form>
+
+<h2>Weekly Transport Capacity</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Week of Year</th>
+            <th>Max Transport Capacity (kg)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in weekly_transport_capacity %}
+        <tr>
+            <td>{{ item.week_of_year }}</td>
+            <td>{{ item.max_transport_capacity }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Weekly Animal Transport</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Week of Year</th>
+            <th>Origin Farm</th>
+            <th>Destination Slaughterhouse</th>
+            <th>Transport Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in weekly_animal_transport %}
+        <tr>
+            <td>{{ item.week_of_year }}</td>
+            <td>{{ item.origin_farm }}</td>
+            <td>{{ item.destination_slaughterhouse }}</td>
+            <td>{{ item.transport_cost }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Weekly Slaughterhouse Demand</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Week of Year</th>
+            <th>Demand</th>
+            <th>Price €/kg</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in weekly_slaughterhouse_demand %}
+        <tr>
+            <td>{{ item.week_of_year }}</td>
+            <td>{{ item.animal_count }}</td>
+            <td>{{ item.live_animal_price_per_kg }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Weekly Farm Animal Availability</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Week of Year</th>
+            <th>Farm</th>
+            <th>Animals</th>
+            <th>Average weight (kg)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in weekly_farm_animal_availability %}
+        <tr>
+            <td>{{ item.week_of_year }}</td>
+            <td>{{ item.farm }}</td>
+            <td>{{ item.animal_count }}</td>
+            <td>{{ item.average_weight }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
