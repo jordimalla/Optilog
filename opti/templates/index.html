@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto de Fin de Grado</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo img {
+            height: 50px;
+        }
+        .login-button {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    {% load static %}
+    <header>
+        <div class="logo">
+            <img src="{% static 'images/unir_logo.png' %}" alt="Logo UNIR">
+        </div>
+        <div>
+            <a href="{% url 'admin:index' %}" class="login-button">Admin</a>
+        </div>
+    </header>
+    <main>
+        <h1>Bienvendio al proyecto de final de grado</h1>
+        <p>inicia sesión para acceder al contenido.</p>
+    </main>
+</body>
+</html>

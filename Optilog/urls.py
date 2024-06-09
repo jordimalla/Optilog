@@ -16,10 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth import views as auth_views
 from opti.admin import admin_site
+from opti import views
 
 urlpatterns = [
     path('admin/', admin_site.urls),
+    path('', views.index, name='index'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
     path('accounts/', include('django.contrib.auth.urls')), 
     path('opti/', include("opti.urls")),    
 ]

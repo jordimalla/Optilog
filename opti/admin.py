@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User, Group
 from django.urls import path
 from django.utils.html import format_html
 from .views import optimization_view
@@ -29,6 +30,10 @@ class CustomAdminSite(admin.AdminSite):
         return super().index(request, extra_context=extra_context)
     
 admin_site = CustomAdminSite(name='custom_admin')
+
+# Register the User and Group models
+admin_site.register(User)
+admin_site.register(Group)
 
 # Register your models here.
 admin_site.register(WeeklyAnimalTransport)

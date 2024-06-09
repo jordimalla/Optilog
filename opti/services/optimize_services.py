@@ -2,10 +2,10 @@ from ortools.linear_solver import pywraplp
 
 from .farm_service import get_farms_name
 from .slaughterhouse_service import get_slaughterhouses_name
-from .weekly_transport_capacity_service import get_max_transport_capacity, get_weeks_of_year_availables
+from .weekly_transport_capacity_service import get_max_transport_capacity
 from .weekly_animal_transport_service import get_transport_cost_per_trip
 from .weekly_slaughterhouse_demand_service import get_demand, get_price_per_kg
-from .weekly_farm_animal_avilability_service import get_all_weekly_farm_animal_availability, get_average_weight
+from .weekly_farm_animal_avilability_service import get_animals_available, get_average_weight
 
 def optimize_transport(week_of_year_selected):
     # Crear el solver de programación entera mixta lineal
@@ -20,7 +20,7 @@ def optimize_transport(week_of_year_selected):
     slaughterhouses = get_slaughterhouses_name()
     
     # Número de animales disponibles en cada granja
-    animals_available = get_all_weekly_farm_animal_availability(week_of_year_selected)
+    animals_available = get_animals_available(week_of_year_selected)
     
     # Demanda de número de animales en cada matadero
     demand = get_demand(week_of_year_selected)

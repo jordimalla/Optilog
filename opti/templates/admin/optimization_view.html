@@ -1,19 +1,25 @@
 <!-- templates/admin/optimization_view.html -->
 {% extends "admin/base_site.html" %}
+{% load static %}
 
 {% block content %}
 <h1>Optimization View</h1>
 
 <form method="get">
-    <label for="week_of_year_selected">Week of Year:</label>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        <select name="week_of_year_selected" id="week_of_year_selected">
-            <value
-            {% for week in weeks_of_year %}
-                <option {% if week_of_year_selected == week %} selected {% endif %} value="{{ week }}">{{ week }}</option>
-            {% endfor %}
-        </select>
-    <button type="submit">Filter</button>
+    <div>
+        <label for="week_of_year_selected">Week of Year:</label>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <select name="week_of_year_selected" id="week_of_year_selected">
+                <option value=""></option>
+                {% for week in weeks_of_year %}
+                    <option {% if week_of_year_selected == week|stringformat:"d" %} selected {% endif %} value="{{ week }}">{{ week }}</option>
+                {% endfor %}
+            </select>
+        <button type="submit" name="action" value="filter">Filter</button>
+    </div>
+    <div>
+        <button type="submit" name="action" value="optimize" class="btn">Optimize</button>
+    </div>
 </form>
 
 <h2>Weekly Transport Capacity</h2>
@@ -98,4 +104,14 @@
     </tbody>
 </table>
 
+<div>
+    <h2>Resultado</h2>
+    <pre>{{ result }}</pre>
+</div>
+
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link href="{% static 'css/styles.css' %}" rel="stylesheet">
 {% endblock %}

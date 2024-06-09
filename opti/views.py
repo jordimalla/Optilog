@@ -1,14 +1,14 @@
-from django.http import HttpResponse
 from django.shortcuts import render
 
-from .services.optimize_services import optimize_transport, get_weeks_of_year_availables
+from .services.optimize_services import optimize_transport
+from .services.weekly_transport_capacity_service import get_weeks_of_year_availables
 from .services.weekly_transport_capacity_service import get_all_weekly_transport_capacity
 from .services.weekly_animal_transport_service import get_all_weekly_animal_transport
 from .services.weekly_slaughterhouse_demand_service import get_all_weekly_slaughterhouse_demand
 from .services.weekly_farm_animal_avilability_service import get_all_weekly_farm_animal_availability
 
 def index(request):
-    return HttpResponse("Hellow, world. You're at the opti index.")
+    return render(request, 'index.html')
 
 def detail(request):
     list_week_of_year_available = get_weeks_of_year_availables()
@@ -32,13 +32,23 @@ def optimize(request):
     return render(request, "opti/detail.html", context)
 
 def optimization_view(request):
+    error_message = None
     list_week_of_year_available = get_weeks_of_year_availables()
     week_of_year_selected = request.GET.get('week_of_year_selected')
     weekly_transport_capacity = get_all_weekly_transport_capacity()
     weekly_animal_transport = get_all_weekly_animal_transport()
     weekly_slaughterhouse_demand = get_all_weekly_slaughterhouse_demand()
     weekly_farm_animal_availability = get_all_weekly_farm_animal_availability()
-    
+    result = ''
+
+    if 'action' in request.GET:
+        action = request.GET['action']
+        
+        if action == 'optimize' and week_of_year_selected:
+            result = optimize_transport(week_of_year_selected)
+        else:
+            result = ''
+
     if week_of_year_selected:
         weekly_transport_capacity = weekly_transport_capacity.filter(week_of_year=week_of_year_selected)
         weekly_animal_transport = weekly_animal_transport.filter(week_of_year=week_of_year_selected)
@@ -46,11 +56,13 @@ def optimization_view(request):
         weekly_farm_animal_availability = weekly_farm_animal_availability.filter(week_of_year=week_of_year_selected)
     
     context = {
-        "weeks_of_year": list_week_of_year_available,
+        'weeks_of_year': list_week_of_year_available,
         'weekly_transport_capacity': weekly_transport_capacity,
         'weekly_animal_transport': weekly_animal_transport,
         'weekly_slaughterhouse_demand': weekly_slaughterhouse_demand,
         'weekly_farm_animal_availability': weekly_farm_animal_availability,
         'week_of_year_selected': week_of_year_selected,
+        'error_message': error_message,
+        'result': result,
     }
     return render(request, 'admin/optimization_view.html', context)

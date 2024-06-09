@@ -3,3 +3,6 @@ gunicorn
 python-decouple
 psycopg2-binary
 ortools
+tailwindcss
+postcss
+autoprefixer
