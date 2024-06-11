@@ -1,4 +1,4 @@
-{% extends "admin/index.html" %}
+{% extends "admin/base_site.html" %}
 {% load static %}
 {% load i18n %}
 
@@ -27,10 +27,6 @@
     </style>
 {% endblock %}
 
-{% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
-{% endblock %}
-
 {% block nav-global %}
     <div class="nav-global">
         {{ farm_link|safe }}
@@ -41,10 +37,6 @@
         {{ weeklyFarmAnimalAvailability_link|safe }}
         {{ custom_link|safe }}
     </div>
-{% endblock %}
-
-{% block breadcrumbs %}
-    {{ block.super }}
 {% endblock %}
 
 {% block content %}

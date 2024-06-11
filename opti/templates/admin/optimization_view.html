@@ -1,6 +1,6 @@
-<!-- templates/admin/optimization_view.html -->
 {% extends "admin/base_site.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block content %}
 <h1>Optimization View</h1>
@@ -109,9 +109,4 @@
     <pre>{{ result }}</pre>
 </div>
 
-{% endblock %}
-
-{% block extrahead %}
-{{ block.super }}
-<link href="{% static 'css/styles.css' %}" rel="stylesheet">
 {% endblock %}

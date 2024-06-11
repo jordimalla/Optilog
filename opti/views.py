@@ -1,4 +1,6 @@
+from django.contrib import admin
 from django.shortcuts import render
+from django.template.response import TemplateResponse
 
 from .services.optimize_services import optimize_transport
 from .services.weekly_transport_capacity_service import get_weeks_of_year_availables
@@ -55,7 +57,9 @@ def optimization_view(request):
         weekly_slaughterhouse_demand = weekly_slaughterhouse_demand.filter(week_of_year=week_of_year_selected)
         weekly_farm_animal_availability = weekly_farm_animal_availability.filter(week_of_year=week_of_year_selected)
     
-    context = {
+    context = admin.site.each_context(request)
+
+    context.update({
         'weeks_of_year': list_week_of_year_available,
         'weekly_transport_capacity': weekly_transport_capacity,
         'weekly_animal_transport': weekly_animal_transport,
@@ -64,5 +68,6 @@ def optimization_view(request):
         'week_of_year_selected': week_of_year_selected,
         'error_message': error_message,
         'result': result,
-    }
-    return render(request, 'admin/optimization_view.html', context)
+    })
+    
+    return TemplateResponse(request, 'admin/optimization_view.html', context)
