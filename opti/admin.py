@@ -17,11 +17,12 @@ class CustomAdminSite(admin.AdminSite):
     site_header = 'Custom Admin'
     site_title = 'Admin Site'
     index_title = 'Admin Home'
-
+    index_template = 'admin/base_site.html'
+    
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            path('opti/optimization/', self.admin_view(optimization_view), name='optimization_view'),
+            path('opti/optimization/', self.admin_view(lambda request: optimization_view(request, self)), name='optimization_view'),
         ]
         return custom_urls + urls
     

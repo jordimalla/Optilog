@@ -1,0 +1,17 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilos personalizados para el admin */
+.admin-header {
+    @apply bg-blue-500 text-white py-4 px-6;
+}
+
+.admin-header .admin-title {
+    @apply text-2xl font-bold;
+}
+
+.admin-content {
+    @apply bg-gray-100 p-6 rounded-lg shadow-md;
+}

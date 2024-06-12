@@ -5,21 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto de Fin de Grado</title>
     {% load static %}
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'src/output.css' %}" rel="stylesheet">
 </head>
-<body>
-    {% load static %}
-    <header>
-        <div class="logo">
-            <img src="{% static 'images/unir_logo.png' %}" alt="Logo UNIR">
-        </div>
-        <div>
-            <a href="{% url 'admin:index' %}" class="btn">Admin</a>
+<body class="bg-gray-100 text-gray-900 mx-auto p-4 sm:p-6 lg:p-8">
+    <header class="bg-white shadow mb-6">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="{% static 'images/unir_logo.png' %}" alt="Logo UNIR" class="h-10 w-auto">
+            </div>
         </div>
     </header>
-    <main>
-        <h1>Bienvendio al proyecto de final de grado</h1>
-        <p>inicia sesión para acceder al contenido.</p>
+    <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:px-6">
+                <h1 class="text-3xl leading-6 font-bold text-gray-900">Bienvenido al Proyecto de Fin de Grado</h1>
+                <p class="mt-1 max-w-2xl text-sm text-gray-500">Inicia sesión para acceder al contenido.</p>
+                <div class="mt-4">
+                    <a href="{% url 'admin:index' %}" class="button">
+                        Admin
+                    </a>
+                </div>
+            </div>
+        </div>
     </main>
 </body>
 </html>

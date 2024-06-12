@@ -2,111 +2,142 @@
 {% load static %}
 {% load i18n %}
 
-{% block content %}
-<h1>Optimization View</h1>
+{% block extrahead %}
+    {{ block.super }}
+    <link href="{% static 'src/output.css' %}"  type="text/css" rel="stylesheet">
+{% endblock %}
 
-<form method="get">
-    <div>
-        <label for="week_of_year_selected">Week of Year:</label>
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-            <select name="week_of_year_selected" id="week_of_year_selected">
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        {% for crumb in breadcrumbs %}
+            {% if forloop.last %}
+                {{ crumb.title }}
+            {% else %}
+                <a href="{{ crumb.url }}">{{ crumb.title }}</a> &rsaquo;
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <h1>Optimization</h1>
+
+    <form method="get" class="space-y-6">
+        <div class="flex flex-col space-y-2">
+            <label for="week_of_year_selected" class="text-lg font-semibold text-gray-700">Week of Year:</label>
+            {% if error_message %}
+                <p class="text-red-500 font-bold">{{ error_message }}</p>
+            {% endif %}
+            <select name="week_of_year_selected" id="week_of_year_selected" class="border border-gray-300 rounded-lg p-2 focus:ring focus:ring-blue-300">
                 <option value=""></option>
                 {% for week in weeks_of_year %}
                     <option {% if week_of_year_selected == week|stringformat:"d" %} selected {% endif %} value="{{ week }}">{{ week }}</option>
                 {% endfor %}
             </select>
-        <button type="submit" name="action" value="filter">Filter</button>
+            <button type="submit" name="action" value="filter" class="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Filter</button>
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" name="action" value="optimize" class="button bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Optimize</button>
+        </div>
+    </form>
+
+    <!-- Línea de separación -->
+    <hr class="border-gray-300 my-8">
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Weekly Transport Capacity</h2>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Week of Year</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Max Transport Capacity (kg)</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for item in weekly_transport_capacity %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.week_of_year }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.max_transport_capacity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <div>
-        <button type="submit" name="action" value="optimize" class="btn">Optimize</button>
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Weekly Animal Transport</h2>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Week of Year</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Origin Farm</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Destination Slaughterhouse</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Transport Cost</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for item in weekly_animal_transport %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.week_of_year }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.origin_farm }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.destination_slaughterhouse }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.transport_cost }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</form>
 
-<h2>Weekly Transport Capacity</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Week of Year</th>
-            <th>Max Transport Capacity (kg)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in weekly_transport_capacity %}
-        <tr>
-            <td>{{ item.week_of_year }}</td>
-            <td>{{ item.max_transport_capacity }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Weekly Slaughterhouse Demand</h2>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Week of Year</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Demand</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Price €/kg</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for item in weekly_slaughterhouse_demand %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.week_of_year }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.animal_count }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.live_animal_price_per_kg }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<h2>Weekly Animal Transport</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Week of Year</th>
-            <th>Origin Farm</th>
-            <th>Destination Slaughterhouse</th>
-            <th>Transport Cost</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in weekly_animal_transport %}
-        <tr>
-            <td>{{ item.week_of_year }}</td>
-            <td>{{ item.origin_farm }}</td>
-            <td>{{ item.destination_slaughterhouse }}</td>
-            <td>{{ item.transport_cost }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Weekly Farm Animal Availability</h2>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Week of Year</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Farm</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Animals</th>
+                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-600">Average weight (kg)</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for item in weekly_farm_animal_availability %}
+                <tr>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.week_of_year }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.farm }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.animal_count }}</td>
+                    <td class="px-4 py-2 text-sm text-gray-700">{{ item.average_weight }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<h2>Weekly Slaughterhouse Demand</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Week of Year</th>
-            <th>Demand</th>
-            <th>Price €/kg</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in weekly_slaughterhouse_demand %}
-        <tr>
-            <td>{{ item.week_of_year }}</td>
-            <td>{{ item.animal_count }}</td>
-            <td>{{ item.live_animal_price_per_kg }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<h2>Weekly Farm Animal Availability</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Week of Year</th>
-            <th>Farm</th>
-            <th>Animals</th>
-            <th>Average weight (kg)</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in weekly_farm_animal_availability %}
-        <tr>
-            <td>{{ item.week_of_year }}</td>
-            <td>{{ item.farm }}</td>
-            <td>{{ item.animal_count }}</td>
-            <td>{{ item.average_weight }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-<div>
-    <h2>Resultado</h2>
-    <pre>{{ result }}</pre>
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Resultado</h2>
+        <pre class="bg-gray-100 p-4 rounded-lg">{{ result }}</pre>
+    </div>
 </div>
-
 {% endblock %}

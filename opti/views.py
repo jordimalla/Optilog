@@ -1,6 +1,6 @@
-from django.contrib import admin
+from django.contrib.admin.sites import site
 from django.shortcuts import render
-from django.template.response import TemplateResponse
+from django.urls import reverse
 
 from .services.optimize_services import optimize_transport
 from .services.weekly_transport_capacity_service import get_weeks_of_year_availables
@@ -33,7 +33,7 @@ def optimize(request):
 
     return render(request, "opti/detail.html", context)
 
-def optimization_view(request):
+def optimization_view(request, admin_site):
     error_message = None
     list_week_of_year_available = get_weeks_of_year_availables()
     week_of_year_selected = request.GET.get('week_of_year_selected')
@@ -57,7 +57,12 @@ def optimization_view(request):
         weekly_slaughterhouse_demand = weekly_slaughterhouse_demand.filter(week_of_year=week_of_year_selected)
         weekly_farm_animal_availability = weekly_farm_animal_availability.filter(week_of_year=week_of_year_selected)
     
-    context = admin.site.each_context(request)
+    breadcrumbs=[
+            {'url': reverse('admin:index'), 'title': admin_site.site_header},
+            {'url': reverse('admin:optimization_view'), 'title': 'Optimization'},
+        ]
+
+    context = admin_site.each_context(request)
 
     context.update({
         'weeks_of_year': list_week_of_year_available,
@@ -68,6 +73,8 @@ def optimization_view(request):
         'week_of_year_selected': week_of_year_selected,
         'error_message': error_message,
         'result': result,
+        'breadcrumbs': breadcrumbs,
     })
     
-    return TemplateResponse(request, 'admin/optimization_view.html', context)
+    return render(request, 'admin/optimization_view.html', context)
+    #return TemplateResponse(request, 'admin/optimization_view.html', context)
